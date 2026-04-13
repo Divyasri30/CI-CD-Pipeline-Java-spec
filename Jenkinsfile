@@ -17,20 +17,26 @@ pipeline{
             sh 'mvn clean package'
         }
     }
-    stage('Analyse code by using sonarqube cloud'){
-        steps{
-            withCredentials([string(credentialsId: 'SONAR-TOKEN', variable: 'SONAR_TOKEN')]){
-                withSonarQubeEnv('SONAR'){
-                  sh """
-                    mvn sonar:sonar \
-                    -Dsonar.projectKey=Divyasri30_spring-petclinic \
-                    -Dsonar.organization=divyasri30 \
-                    -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.login=$SONAR_TOKEN
-                    """
-                }
-            }
-        }
+    // stage('Analyse code by using sonarqube cloud'){
+    //     steps{
+    //         withCredentials([string(credentialsId: 'SONAR-TOKEN', variable: 'SONAR_TOKEN')]){
+    //             withSonarQubeEnv('SONAR'){
+    //               sh """
+    //                 mvn sonar:sonar \
+    //                 -Dsonar.projectKey=Divyasri30_spring-petclinic \
+    //                 -Dsonar.organization=divyasri30 \
+    //                 -Dsonar.host.url=https://sonarcloud.io \
+    //                 -Dsonar.login=$SONAR_TOKEN
+    //                 """
+    //             }
+    //         }
+    //     }
+    // }
+   post{
+    always{
+        aechiveArtifcats artifacts:'**/*.jar'
+        junit'**/surefire-reports/*.xml'
     }
+   }
   }
 }
