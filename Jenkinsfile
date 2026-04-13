@@ -19,7 +19,7 @@ pipeline{
     }
     stage('Analyse code by using sonarqube cloud'){
         steps{
-            withCredentials([string(credentialsId:SONAR-TOKEN variable:SONAR_TOKEN)]){
+            withCredentials([string(credentialsId:SONAR-TOKEN , variable:SONAR_TOKEN)]){
                 withSonarQubeEnv('SONAR'){
                     sh """
                     mvn sonar:sonar \
