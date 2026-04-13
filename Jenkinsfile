@@ -12,20 +12,21 @@ pipeline{
                 branch: 'main'
         }
     }
-    stage('build '){
+    stage('build'){
         steps{
             sh 'mvn package'
         }
     }
     stage('Analyse code by using sonarqube cloud'){
         steps{
-            withCredentials([string(credentialsId:SONAR-TOKEN varaible:SONAR-VARIABLE)]){
+            withCredentials([string(credentialsId:SONAR-TOKEN variable:SONAR_TOKEN)]){
                 withSonarQubeEnv('SONAR'){
                     sh """
+                    mvn sonar:sonar \
                     -Dsonar.projectKey= Divyasri30_spring-petclinic \
                     -Dsonar.organization= divyasri30 \
                     -Dsonar.host.url= https://sonarcloud.io/ \
-                    -Dsonar.login= $SONAR-VARIABLE
+                    -Dsonar.login= $SONAR_TOKEN
                    
                            """
                 }
