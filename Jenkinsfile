@@ -32,10 +32,10 @@ pipeline{
     //         }
     //     }
     // }
-   post{
-    always{
-        aechiveArtifcats artifacts:'**/*.jar'
-        junit'**/surefire-reports/*.xml'
+   post {
+    always {
+        archiveArtifcats artifacts:'**/*.jar'
+        junit '**/surefire-reports/*.xml'
     }
    }
   }
