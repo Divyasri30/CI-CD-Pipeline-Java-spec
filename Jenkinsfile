@@ -35,7 +35,7 @@ pipeline{
   }
    post {
     always {
-        archiveArtifcats artifacts:'**/*.jar'
+        archiveArtifacts artifacts:'**/*.jar'
         junit '**/surefire-reports/*.xml'
     }
    }
