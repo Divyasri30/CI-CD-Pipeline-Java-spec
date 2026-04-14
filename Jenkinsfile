@@ -41,6 +41,11 @@ pipeline{
         sh "docker build -t ${IMAGE_NAME}:${TAG_NAME} ."
       }
     }
+    stage('trivy scan'){
+      steps{
+        sh "trivy image ${IMAGE_NAME}:${TAG_NAME} "
+      }
+    }
   }
   //  post {
   //   always {
