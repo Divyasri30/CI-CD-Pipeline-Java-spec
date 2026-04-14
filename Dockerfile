@@ -9,7 +9,6 @@ LABEL projectname="java-spc"
 ARG username=devops
 RUN useradd -m -d /home/${username} ${username} -s /bin/bash
 COPY --from=build /app/target/*.jar app.jar
-RUN chown -R ${username}:${username} /app
 USER ${username}
 WORKDIR /app
 EXPOSE 8080
