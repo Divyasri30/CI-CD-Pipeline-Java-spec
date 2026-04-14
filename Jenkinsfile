@@ -5,9 +5,9 @@ pipeline{
   triggers{
     pollSCM('* * * * *')
   }
-  environment{
-    image-name=''
-    tag-name='1.0'
+  environment {
+    IMAGE_NAME = 'java'
+    TAG_NAME = '1.3'
   }
   stages{
     stage('Git checkout'){
@@ -36,9 +36,9 @@ pipeline{
     //         }
     //     }
     // }
-    stage('Docker image Build'){
-      steps{
-        sh "docker image build -t image:1.0 ."
+        stage('Docker Build') {
+      steps {
+        sh "docker build -t ${IMAGE_NAME}:${TAG_NAME} ."
       }
     }
   }
