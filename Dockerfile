@@ -6,10 +6,11 @@ RUN mvn package
 
 FROM eclipse-temurin:17-jdk-jammy AS runtime
 LABEL projectname="java-spc"
-ARG username=Devops
+ARG username=devops
 RUN useradd -m -d /home/${username} ${username} -s /bin/bash
-COPY --from=build /app/target/*.jar spc.jar
+COPY --from=build /app/target/*.jar app.jar
+RUN chown -R ${username}:${username} /app
 USER ${username}
-WORKDIR /spc
+WORKDIR /app
 EXPOSE 8080
-CMD ["java","-jar","spc.jar"]
+CMD ["java","-jar","app.jar"]
