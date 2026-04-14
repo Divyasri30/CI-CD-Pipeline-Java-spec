@@ -5,6 +5,10 @@ pipeline{
   triggers{
     pollSCM('* * * * *')
   }
+  environment{
+    image-name=''
+    tag-name='1.0'
+  }
   stages{
     stage('Git checkout'){
         steps{
@@ -32,12 +36,18 @@ pipeline{
     //         }
     //     }
     // }
-  }
-   post {
-    always {
-        archiveArtifacts artifacts:'**/*.jar'
-        junit '**/surefire-reports/*.xml'
+    stage('Docker image Build'){
+      steps{
+        sh "docker image build -t image:1.0 ."
+      }
     }
-   }
+  }
+  //  post {
+  //   always {
+  //       archiveArtifacts artifacts:'**/*.jar'
+  //       junit '**/surefire-reports/*.xml'
+  //   }
+  //  }
+  
   
 }
