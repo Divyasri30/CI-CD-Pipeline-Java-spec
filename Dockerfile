@@ -4,7 +4,7 @@ ADD . /app
 RUN mvn package
 
 
-FROM eclipse-temurin:17-jdk-jammy AS Runtime
+FROM eclipse-temurin:17-jdk-jammy AS runtime
 LABEL projectname="java-spc"
 ARG username=Devops
 RUN useradd -m -d /home/${username} ${username} -s /bin/bash
