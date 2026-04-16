@@ -9,7 +9,7 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 25%
-      maxUnavaliable: 25%
+      maxUnavailable: 25%
   selector:
     matchLabels:
       dep: spc
