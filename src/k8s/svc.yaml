@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-svc 
+spec:
+  type: loadBalancer
+  selector:
+    dep: spc
+  ports:
+    - port: 8080

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-Dp 
+spec:
+  minReadySeconds: 4
+  replicas: 4
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavaliable: 25%
+  selector:
+    matchLabels:
+      dep: spc 
+  template:
+    metadata:
+      labels:
+        dep: spc 
+      name: my-pod
+    spec:
+      containers:
+        - name: my-con
+          image: "549245500298.dkr.ecr.ap-south-1.amazonaws.com/dev/pipeline:latest"
+          ports:
+            - containerPort: 8080
+
+              
+    

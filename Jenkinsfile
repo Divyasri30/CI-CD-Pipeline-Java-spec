@@ -55,6 +55,11 @@ pipeline{
         """
       }
     }
+    stage('deploy to k8s'){
+      steps{
+        sh " kubectl apply -f k8s/."
+      }
+    }
   }
   //  post {
   //   always {
