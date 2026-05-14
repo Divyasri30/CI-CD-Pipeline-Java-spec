@@ -67,7 +67,7 @@ jobs:
     # Step 12: Helm Deploy
     - name: Deploy to Kubernetes
       run: |
-        helm upgrade --install spring-petclinic ./spring-petclinic \
+        helm upgrade --install spring-petclinic ./K8S/spring-petclinic \
           --namespace dev \
           --create-namespace \
           --set image.repository=ghcr.io/divyasri30/java-app \
