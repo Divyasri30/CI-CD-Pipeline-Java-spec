@@ -30,7 +30,7 @@ jobs:
       run: |
         mvn clean verify sonar:sonar \
           -Dsonar.projectKey=Divyasri30_CI-CD-Pipeline-Java-spec \
-          -Dsonar.organization=Divyasri30 \
+          -Dsonar.organization=divyasri30 \
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
