@@ -1,0 +1,38 @@
+replicaCount: 3
+
+image:
+  repository: ghcr.io/divyasri-zelar/spring-pet-clinic
+  tag: "1.1"
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8080
+  nodePort: 32000
+
+ingress:
+  enabled: true
+  className: nginx
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  cpuUtilization: 70
+
+config:
+  springProfile: dev
+
+secret:
+  dbUser: root
+  dbPassword: password

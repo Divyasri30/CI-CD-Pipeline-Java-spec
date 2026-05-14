@@ -1,0 +1,82 @@
+name: Java CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cicd:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+    # Step 1: Checkout Code
+    - name: Git Checkout
+      uses: actions/checkout@v4
+
+    # Step 2: Setup Java
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Step 3: SonarQube Scan
+    - name: SonarQube Scan
+      run: mvn sonar:sonar \
+        -Dsonar.projectKey=my-java-app \
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+    # Step 4: Build Application
+    - name: Build Application
+      run: mvn clean package -DskipTests
+
+    # Step 5: Build Docker Image
+    - name: Build Docker Image
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }} .
+
+    # Step 6: Trivy Scan
+    - name: Trivy Image Scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }}
+        format: table
+
+    # Step 7: Login to GHCR
+    - name: Login to GHCR
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    # Step 8: Push Image
+    - name: Push Image to GHCR
+      run: |
+        docker push ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }}
+
+    # Step 9: Setup Kubectl
+    - name: Setup Kubectl
+      uses: azure/setup-kubectl@v4
+
+    # Step 10: Setup Helm
+    - name: Setup Helm
+      uses: azure/setup-helm@v4
+
+    # Step 11: Configure Kubeconfig
+    - name: Configure Kubernetes
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+    # Step 12: Helm Deploy
+    - name: Deploy to Kubernetes
+      run: |
+        helm upgrade --install java-app ./deployment-chart \
+        --namespace dev \
+        --create-namespace \
+        --set image.repository=ghcr.io/${{ github.repository_owner }}/java-app \
+        --set image.tag=${{ github.sha }}
