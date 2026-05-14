@@ -26,12 +26,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # Step 3: SonarQube Scan
-    - name: SonarQube Scan
-      run: mvn sonar:sonar \
-        -Dsonar.projectKey=my-java-app \
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+    - name: SonarCloud Scan
+      run: |
+        mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=Divyasri30_spring-petclinic \
+          -Dsonar.organization=divyasri30 \
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
     # Step 4: Build Application
     - name: Build Application
