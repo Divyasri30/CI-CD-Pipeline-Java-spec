@@ -32,13 +32,13 @@ jobs:
     # Step 5: Build Docker Image
     - name: Build Docker Image
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }} .
+        docker build -t ghcr.io/divyasri30/java-app:${{ github.sha }} .
 
     # Step 6: Trivy Scan
     - name: Trivy Image Scan
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }}
+        image-ref: ghcr.io/divyasri30/java-app:${{ github.sha }}
         format: table
 
     # Step 7: Login to GHCR
@@ -48,7 +48,7 @@ jobs:
     # Step 8: Push Image
     - name: Push Image to GHCR
       run: |
-        docker push ghcr.io/${{ github.repository_owner }}/java-app:${{ github.sha }}
+        docker push ghcr.io/divyasri30/java-app:${{ github.sha }}
 
     # Step 9: Setup Kubectl
     - name: Setup Kubectl
@@ -70,5 +70,5 @@ jobs:
         helm upgrade --install java-app ./deployment-chart \
         --namespace dev \
         --create-namespace \
-        --set image.repository=ghcr.io/${{ github.repository_owner }}/java-app \
+        --set image.repository=ghcr.io/divyasri30/java-app \
         --set image.tag=${{ github.sha }}
