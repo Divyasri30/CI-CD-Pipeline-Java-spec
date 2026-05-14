@@ -67,8 +67,8 @@ jobs:
     # Step 12: Helm Deploy
     - name: Deploy to Kubernetes
       run: |
-        helm upgrade --install java-app ./deployment-chart \
-        --namespace dev \
-        --create-namespace \
-        --set image.repository=ghcr.io/divyasri30/java-app \
-        --set image.tag=${{ github.sha }}
+        helm upgrade --install spring-petclinic ./spring-petclinic \
+          --namespace dev \
+          --create-namespace \
+          --set image.repository=ghcr.io/divyasri30/java-app \
+          --set image.tag=${{ github.sha }}
